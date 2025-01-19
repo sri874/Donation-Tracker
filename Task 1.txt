@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flipping Card with Factorial Calculator</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Bold, Times new roman;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background:white;
+    }
+
+    /* Card Container */
+    .card {
+      width: 300px;
+      height: 200px;
+      perspective: 1000px;
+    }
+
+    /* Card Styles */
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: pink;
+      border-radius: 10px;
+    }
+
+    .card-front {
+      background:skyblue;
+    }
+
+    .card-back {
+      background: brown;
+      transform: rotateY(180deg);
+    }
+
+    /* Factorial Form */
+    .factorial-form {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      width: 50%;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: skyblue;
+      color: brown;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color:black;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Card Component -->
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-front">
+        <h2>Hover Me!</h2>
+      </div>
+      <div class="card-back">
+        <p>Factorial Calculator Below</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Factorial Form -->
+  <div class="factorial-form">
+    <input type="number" id="numberInput" placeholder="Enter a number" />
+    <button onclick="calculateFactorial()">Calculate Factorial</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    // JavaScript: Factorial Calculation Logic
+
+    // Iterative Method
+    function factorialIterative(n) {
+      let result = 1;
+      for (let i = 1; i <= n; i++) {
+        result *= i;
+      }
+      return result;
+    }
+
+    // Recursive Method
+    function factorialRecursive(n) {
+      if (n === 0 || n === 1) return 1;
+      return n * factorialRecursive(n - 1);
+    }
+
+    // Function to Handle Calculation
+    function calculateFactorial() {
+      const numberInput = document.getElementById('numberInput').value;
+      const num = parseInt(numberInput);
+      if (isNaN(num) || num < 0) {
+        document.getElementById('result').textContent = "Please enter a non-negative integer.";
+        return;
+      }
+      const iterative = factorialIterative(num);
+      const recursive = factorialRecursive(num);
+      document.getElementById('result').innerHTML = `
+        Iterative: ${iterative}<br>
+        Recursive: ${recursive}
+      `;
+    }
+  </script>
+</body>
+</html>
