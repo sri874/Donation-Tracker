@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .error { color: red; font-size: 0.9rem; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+    <header class="text-center py-4">
+        <h1 class="text-4xl font-bold text-blue-800">Smart Expense Tracker</h1>
+    </header>
+    
+    <main class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+        <form id="expenseForm" class="space-y-4">
+            <div>
+                <label for="expenseName" class="block text-gray-700 font-medium">Expense Name</label>
+                <input 
+                    type="text" 
+                    id="expenseName" 
+                    class="w-full p-2 border border-blue-300 rounded-lg" 
+                    placeholder="E.g., Groceries" 
+                    required>
+                <span id="nameError" class="error"></span>
+            </div>
+
+            <div>
+                <label for="expenseAmount" class="block text-gray-700 font-medium">Amount (USD)</label>
+                <input 
+                    type="number" 
+                    id="expenseAmount" 
+                    class="w-full p-2 border border-darkrose-300 rounded-lg" 
+                    placeholder="E.g., 50" 
+                    required>
+                <span id="amountError" class="error"></span>
+            </div>
+
+            <div>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg w-full">Add Expense</button>
+            </div>
+        </form>
+
+        <section class="mt-6">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4">Expense Summary</h2>
+            <ul id="expenseList" class="space-y-2">
+                <!-- Dynamic list of expenses will go here -->
+            </ul>
+
+            <div class="mt-4 text-lg font-medium text-gray-800">
+                Total: <span id="totalAmount">$0.00</span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('expenseForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const expenseName = document.getElementById('expenseName').value.trim();
+            const expenseAmount = parseFloat(document.getElementById('expenseAmount').value.trim());
+
+            const nameError = document.getElementById('nameError');
+            const amountError = document.getElementById('amountError');
+
+            nameError.textContent = '';
+            amountError.textContent = '';
+
+            if (!expenseName) {
+                nameError.textContent = 'Please enter an expense name.';
+                return;
+            }
+
+            if (isNaN(expenseAmount) || expenseAmount <= 0) {
+                amountError.textContent = 'Please enter a valid positive amount.';
+                return;
+            }
+
+            const expenseList = document.getElementById('expenseList');
+            const totalAmount = document.getElementById('totalAmount');
+
+            const li = document.createElement('li');
+            li.className = 'flex justify-between bg-gray-50 p-2 rounded-lg shadow-sm';
+            li.innerHTML = `
+                <span>${expenseName}</span>
+                <span>$${expenseAmount.toFixed(2)}</span>
+            `;
+
+            expenseList.appendChild(li);
+
+            const currentTotal = parseFloat(totalAmount.textContent.replace('$', ''));
+            totalAmount.textContent = `$${(currentTotal + expenseAmount).toFixed(2)}`;
+
+            document.getElementById('expenseForm').reset();
+        });
+    </script>
+</body>
+</html>
